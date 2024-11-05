@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class LoginA {
     Scanner sc = new Scanner(System.in);
     Admin ad = new Admin();
+    AdminBD adminBD = new AdminBD();
 
     public void loginAdmin() {
         System.out.println("Login de administrador");
@@ -13,7 +14,7 @@ public class LoginA {
         System.out.print("Senha: ");
         int senha = sc.nextInt();
 
-        AdminBD adminBD = new AdminBD();
+
         int count = 3;
         boolean loginBemSucedido = adminBD.realizarlogin(login, senha);
 
@@ -31,6 +32,8 @@ public class LoginA {
         if (loginBemSucedido) {
             System.out.println("Login realizado com sucesso!");
             System.out.println("==Bem vindo==");
+            TelaPadrao telaPadrao = new TelaPadrao();
+            telaPadrao.telaAdmin();
         } else {
             System.out.println("Login negado. Número de tentativas excedido.");
             //recomeçar programa

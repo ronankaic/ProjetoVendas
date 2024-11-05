@@ -2,6 +2,7 @@ package com.sistemadevendas.venda;
 
 import com.sistemadevendas.ConexaoBD;
 import com.sistemadevendas.LimparTerminal;
+import com.sistemadevendas.login.TelaLogin;
 
 import java.sql.*;
 import java.util.Scanner;
@@ -13,50 +14,51 @@ public class TelaInicial {
     LimparTerminal LT = new LimparTerminal();
 
     public void mostrarMenu() {
+        LimparTerminal.limparTerminal();
 
-        while (true) {
+        System.out.println("==Sistema de Vendas==");
+        System.out.println("Escolha uma opção:");
+        System.out.println("1. Listar produtos");
+        System.out.println("2. Cadastrar produtos");
+        System.out.println("3. Excluir produtos");
+        System.out.println("4. Adicionar produtos ao carrinho");
+        System.out.println("5. Finalizar compra");
+        System.out.println("6. Voltar ao menu");
 
-            LT.limparTerminal();
 
-            System.out.println("==Sistema de Vendas==");
-            System.out.println("Escolha uma opção:");
-            System.out.println("1. Listar produtos");
-            System.out.println("2. Cadastrar produtos");
-            System.out.println("3. Excluir produtos");
-            System.out.println("4. Adicionar produtos ao carrinho");
-            System.out.println("5. Finalizar compra");
-            System.out.println("6. Sair");
 
-            int option = sc.nextInt();
 
-            switch (option) {
-                case 1:
-                    listarProdutos(conexao);
-                    break;
-                case 2:
-                    cadastrarProdutos(conexao);
-                    break;
-                case 3:
-                    excluirProdutos(conexao);
-                    break;
-                case 4:
-                    adicionarCarrinho(conexao);
-                    break;
-                case 5:
-                    finalizarCompra(conexao);
-                    break;
-                case 6:
-                    System.out.println("Finalizando programa.");
-                    System.exit(0);
-                    break;
-                default:
-                    System.out.println("Opção inválida.");
-            }
+
+        int option = sc.nextInt();
+
+        switch (option) {
+            case 1:
+                listarProdutos(conexao);
+                recomecarMenu();
+                break;
+            case 2:
+                cadastrarProdutos(conexao);
+                recomecarMenu();
+                break;
+            case 3:
+                excluirProdutos(conexao);
+                recomecarMenu();
+                break;
+            case 4:
+                adicionarCarrinho(conexao);
+                recomecarMenu();
+                break;
+            case 5:
+                finalizarCompra(conexao);
+                break;
+            case 6:
+                return;
+            default:
+                System.out.println("Opção inválida.");
         }
     }
 
     public void listarProdutos(Connection conexao) {
-        LT.limparTerminal();
         String sql = "SELECT * FROM produtos";
         try (Statement stmt = conexao.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -69,19 +71,14 @@ public class TelaInicial {
                 int quantidade = rs.getInt("quantidade");
                 System.out.printf("ID: %d, Nome: %s, Preco: %.2f, Quantidade: %d%n", id, nome, preco, quantidade);
             }
-
-        } catch (SQLException var13) {
-            SQLException e = var13;
+        } catch (SQLException e) {
             System.out.println("Erro ao listar produtos: " + e.getMessage());
         }
-        sc.nextLine();
-        sc.nextLine();
+
     }
 
-    public void cadastrarProdutos(Connection conexao) {
-        LT.limparTerminal();
+    private void cadastrarProdutos(Connection conexao) {
         listarProdutos(conexao);
-
         String sql = "SELECT MAX(id) AS ultimo_id FROM produtos";
         int ultimoId = 0;
 
@@ -125,10 +122,10 @@ public class TelaInicial {
             System.out.println("Erro ao cadastrar produto: " + e.getMessage());
             throw new RuntimeException(e);
         }
+        mostrarMenu();
     }
 
-    public void excluirProdutos(Connection conexao) {
-        LT.limparTerminal();
+    private void excluirProdutos(Connection conexao) {
         listarProdutos(conexao);
 
         System.out.println("==Exluir produtos==");
@@ -152,11 +149,10 @@ public class TelaInicial {
         } catch (SQLException e) {
             System.err.println("Erro ao excluir produto: " + e.getMessage());
         }
-
+        mostrarMenu();
     }
 
     private void adicionarCarrinho(Connection conexao) {
-        LT.limparTerminal();
         listarProdutos(conexao);
         boolean continuar = true;
 
@@ -201,9 +197,10 @@ public class TelaInicial {
                 }
             }
         }
+        mostrarMenu();
     }
 
-    private void atualizarEstoque(Connection conexao, int idProduto, int estoque) {
+    public void atualizarEstoque(Connection conexao, int idProduto, int estoque) {
         String sql = "UPDATE produtos SET quantidade = ? WHERE id = ?;";
 
         try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
@@ -217,8 +214,14 @@ public class TelaInicial {
         }
     }
 
-    public void finalizarCompra(Connection conexao) {
+    private void finalizarCompra(Connection conexao) {
+        ResgatarDados dados = new ResgatarDados();
         RegistroSaida registroSaida = new RegistroSaida();
+        dados.PesquisarDados();
+        double taxaCredito = dados.taxaCredito;
+        double taxaDebito = dados.taxaDebito;
+        String chavePix = dados.chavePix;
+
         if (carrinho.calcularTotal() <= 0) {
             System.out.println("Carrinho vazio. Não é possível finalizar a compra.");
             sc.nextLine();
@@ -228,7 +231,6 @@ public class TelaInicial {
 
         double total = carrinho.calcularTotal();
         String formaPagamento;
-        LT.limparTerminal();
         System.out.printf("Valor total da compra: R$%.2f%n", total);
         System.out.println("Escolha a forma de pagamento: ");
         System.out.println("1. Dinheiro");
@@ -249,7 +251,7 @@ public class TelaInicial {
                 formaPagamento = "Pix";
                 registroSaida.registrarSaidas(conexao, carrinho.getProdutos(), formaPagamento);
                 System.out.printf("Valor da compra R$ %.2f%n", total);
-                System.out.println("E-mail para pagamento via Pix: sandrasxr123@gmail.com");
+                System.out.println("Chave Pix: " + chavePix);
                 System.out.println("Obrigado, volte sempre!");
                 sc.nextLine();
                 sc.nextLine();
@@ -260,19 +262,23 @@ public class TelaInicial {
                 int cartao = sc.nextInt();
                 if (cartao == 1) {
                     formaPagamento = "Cartão de débito";
+                    double porcentagemDebito = 1 + (taxaDebito / 100);
+                    total *= porcentagemDebito;
                     registroSaida.registrarSaidas(conexao, carrinho.getProdutos(), formaPagamento);
+                    System.out.printf("Taxa de %.2f%% adicionada no valor total\n", taxaDebito);
                 } else if (cartao == 2) {
                     formaPagamento = "Cartão de crédito";
-                    total *= 1.05;
+                    double porcentagemCredito = 1 + (taxaCredito / 100);
+                    total *= porcentagemCredito;
                     registroSaida.registrarSaidas(conexao, carrinho.getProdutos(), formaPagamento);
-                    System.out.println("Taxa de 5% adicionada no valor total");
+                    System.out.printf("Taxa de %.2f%% adicionada no valor total\n", taxaCredito);
                 } else {
                     System.out.println("Escolha inválida.");
                     finalizarCompra(conexao);
                 }
                 System.out.printf("Valor da compra R$ %.2f%n", total);
                 System.out.println("Obrigado, volte sempre!");
-                recomecarMenu();
+
                 break;
             default:
                 System.out.println("Escolha inválida.");
@@ -280,6 +286,8 @@ public class TelaInicial {
         }
 
         carrinho.limparCarrinho();
+        recomecarMenu();
+
     }
 
     private void recomecarMenu() {
@@ -291,7 +299,7 @@ public class TelaInicial {
 
         switch (opcao) {
             case 1:
-                sc.nextLine();
+                mostrarMenu();
                 break;
             case 2:
                 System.out.println("Finalizando programa");
@@ -299,8 +307,6 @@ public class TelaInicial {
                 break;
             default:
                 System.out.println("Opcao invalida. Por favor, digite 1 ou 2.");
-
         }
     }
-
 }

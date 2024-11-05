@@ -1,5 +1,6 @@
 package com.sistemadevendas.login;
 
+import com.sistemadevendas.ConexaoBD;
 import com.sistemadevendas.LimparTerminal;
 
 import java.util.Random;
@@ -8,6 +9,7 @@ import java.util.Scanner;
 public class PrimeiroAcessoF {
     LimparTerminal lt = new LimparTerminal();
     Scanner sc = new Scanner(System.in);
+    FuncionarioDB func = new FuncionarioDB();
     int idF;
 
 
@@ -27,9 +29,7 @@ public class PrimeiroAcessoF {
         System.out.println("Id Criado com sucesso ID= " + idF);
 
         Funcionario funcionario = new Funcionario(nome, senha,idF);
-        FuncionarioDB funcionarioDB = new FuncionarioDB();
-        funcionarioDB.cadastrarFuncionario(funcionario);
-
+        func.cadastrarFuncionario(funcionario);
 
     }
 /*

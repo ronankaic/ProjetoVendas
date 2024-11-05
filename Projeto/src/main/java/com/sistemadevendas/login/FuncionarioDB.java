@@ -12,21 +12,7 @@ public class FuncionarioDB {
     private String nomeFuncionario;
     private int senhaFuncionario;
 
-    public String getNomeFuncionario() {
-        return nomeFuncionario;
-    }
 
-    public void setNomeFuncionario(String nomeFuncionario) {
-        this.nomeFuncionario = nomeFuncionario;
-    }
-
-    public int getSenhaFuncionario() {
-        return senhaFuncionario;
-    }
-
-    public void setSenhaFuncionario(int senhaFuncionario) {
-        this.senhaFuncionario = senhaFuncionario;
-    }
 
     public void cadastrarFuncionario(Funcionario funcionario) {
         String sql = "INSERT INTO funcionario (nome, senha, idF) VALUES (?,?,?)";

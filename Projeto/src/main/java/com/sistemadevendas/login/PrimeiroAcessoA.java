@@ -38,22 +38,12 @@ public class PrimeiroAcessoA {
             System.out.println("Numero maximo de administradores cadastrados");
             System.out.println("Faça login ou cadastre um novo funcionario");
             Menu menu = new Menu();
-            menu.acessarSistema();
+
 
         }
 
 
     }
-
-/*
-    private void gerarId() {
-        Random rand = new Random();
-        int numeroA;
-
-        numeroA = rand.nextInt(10000);
-        idA = numeroA;
-    }
-*/
 
     public void setIdA() {
         Random rand = new Random();
@@ -67,5 +57,15 @@ public class PrimeiroAcessoA {
         idA = randNumA;
 
     }
+
+/*
+    private void gerarId() {
+        Random rand = new Random();
+        int numeroA;
+
+        numeroA = rand.nextInt(10000);
+        idA = numeroA;
+    }
+*/
 
 }

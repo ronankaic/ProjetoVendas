@@ -30,4 +30,5 @@ public class RegistroSaida {
             System.err.println("Erro ao registrar saída: " + e.getMessage());
         }
     }
+
 }

@@ -2,7 +2,7 @@ package com.sistemadevendas;
 
 public class LimparTerminal {
 
-    public void limparTerminal() {
+    public static void limparTerminal() {
         try {
             if (System.getProperty("os.name").contains("Windows")) {
                 (new ProcessBuilder(new String[]{"cmd", "/c", "cls"})).inheritIO().start().waitFor();
