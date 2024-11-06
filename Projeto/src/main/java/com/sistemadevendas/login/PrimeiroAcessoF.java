@@ -1,29 +1,31 @@
 package com.sistemadevendas.login;
 
-import com.sistemadevendas.ConexaoBD;
-import com.sistemadevendas.LimparTerminal;
+
+import com.sistemadevendas.database.FuncionarioDB;
 
 import java.util.Random;
-import java.util.Scanner;
+
+import static com.sistemadevendas.utilitarios.Entrada.lerInt;
+import static com.sistemadevendas.utilitarios.Entrada.lerString;
+import static com.sistemadevendas.utilitarios.LimparTerminal.limparTerminal;
 
 public class PrimeiroAcessoF {
-    LimparTerminal lt = new LimparTerminal();
-    Scanner sc = new Scanner(System.in);
     FuncionarioDB func = new FuncionarioDB();
     int idF;
 
 
 
     public void CadastrarFuncionario(){
+        limparTerminal();
         System.out.println("==Cadastro de funcionario==");
         System.out.print("Digite o nome do funcionario: ");
-        String nome = sc.nextLine();
+        String nome = lerString();
         System.out.print("Senha(sequência numérica de 5 digitos): ");
-        int senha = sc.nextInt();
+        int senha = lerInt();
         while (senha < 10000 || senha > 100000) {
             System.out.println("A senha deve ter no mínimo e no máximo 5 digitos.");
             System.out.print("Senha: ");
-            senha = sc.nextInt();
+            senha = lerInt();
         }
         setIdF();
         System.out.println("Id Criado com sucesso ID= " + idF);
@@ -32,16 +34,6 @@ public class PrimeiroAcessoF {
         func.cadastrarFuncionario(funcionario);
 
     }
-/*
-    private void gerarId() {
-        Random rand = new Random();
-        int numeroF;
-
-        numeroF = rand.nextInt(10000);
-        idF = numeroF;
-
-    }
-*/
 
 
     public void setIdF(){
@@ -58,3 +50,4 @@ public class PrimeiroAcessoF {
     }
 
 }
+

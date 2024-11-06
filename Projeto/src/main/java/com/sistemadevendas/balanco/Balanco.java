@@ -1,17 +1,19 @@
 package com.sistemadevendas.balanco;
 
-import com.sistemadevendas.ConexaoBD;
-import com.sistemadevendas.login.Admin;
-import com.sistemadevendas.login.Funcionario;
-import com.sistemadevendas.login.TelaLogin;
-import com.sistemadevendas.login.TelaPadrao;
 
-import java.util.Scanner;
+import com.sistemadevendas.database.AdminDB;
+import com.sistemadevendas.database.BalancoDB;
+import com.sistemadevendas.database.FuncionarioDB;
+import com.sistemadevendas.telas.TelaLogin;
+
+import static com.sistemadevendas.utilitarios.Entrada.lerInt;
+import static com.sistemadevendas.utilitarios.LimparTerminal.limparTerminal;
 
 public class Balanco {
-    Scanner sc = new Scanner(System.in);
-    ConexaoBD bd = new ConexaoBD();
 
+    AdminDB AdminBD = new AdminDB();
+    FuncionarioDB FuncBD = new FuncionarioDB();
+    BalancoDB BalancoBD = new BalancoDB();
     TelaLogin login = new TelaLogin();
     int mes_selecionado, ano_selecionado;
     String formaPagamento;
@@ -20,17 +22,17 @@ public class Balanco {
         int count = 3;
 
         System.out.print("Digite o seu id: ");
-        int id = sc.nextInt();
+        int id = lerInt();
         if (id < 10000) {
-            boolean retorno = bd.pesquisarIdA(id);
-            String nome = bd.pesquisarNomeA(id);
+            boolean retorno = AdminBD.pesquisarIdA(id);
+            String nome = AdminBD.pesquisarNomeA(id);
             if (retorno) {
                 System.out.println("Bem vindo " + nome + "!");
                 visualizar();
             }
         } else {
-            boolean retorno = bd.pesquisarIdF(id);
-            String nome = bd.pesquisarNomeF(id);
+            boolean retorno = FuncBD.pesquisarIdF(id);
+            String nome = FuncBD.pesquisarNomeF(id);
             if (retorno) {
                 System.out.println("Bem vindo " + nome + "!");
                 visualizar();
@@ -39,7 +41,8 @@ public class Balanco {
     }
 
     public void visualizar() {
-        bd.listarSaidas();
+        limparTerminal();
+        BalancoBD.listarSaidas();
         double total;
 
         System.out.println("Como deseja filtrar o balanço?");
@@ -49,7 +52,7 @@ public class Balanco {
         System.out.println("3. Por ano");
         System.out.println("4. Por mês e forma de pagamento");
         System.out.println("5. Voltar ao menu");
-        int vis = sc.nextInt();
+        int vis = lerInt();
 
         //1. mes / ano
         //> pede mes e ano
@@ -62,41 +65,41 @@ public class Balanco {
         switch (vis) {
             case 1:
                 formaPagamento = escolherFormaDePagamento();
-                bd.listarFormaDePagamento(formaPagamento);
+                BalancoDB.listarFormaDePagamento(formaPagamento);
 
                 break;
             case 2:
                 while (mes_selecionado > 12 || mes_selecionado < 1) {
                     System.out.println("Mês desejado"); //campo de escrita
-                    mes_selecionado = sc.nextInt(); //coluna de seleção
+                    mes_selecionado = lerInt();//coluna de seleção
                     System.out.println("Ano desejado: ");
-                    ano_selecionado = sc.nextInt(); //coluna de seleção
+                    ano_selecionado = lerInt(); //coluna de seleção
                     if (mes_selecionado > 12 || mes_selecionado < 1) {
                         System.out.println("Mês inválido");
                     }
                 }
-                total = bd.listarMesAno(mes_selecionado, ano_selecionado);
+                total = BalancoBD.listarMesAno(mes_selecionado, ano_selecionado);
                 System.out.printf("O valor total vendido no mês foi de: R$%.2f%n", total);
 
                 break;
             case 3:
                 System.out.println("Entre o ano desejado"); //campo de escrita
-                ano_selecionado = sc.nextInt(); //coluna de seleção
-                total = bd.listarAno(ano_selecionado);
+                ano_selecionado = lerInt(); //coluna de seleção
+                total = BalancoDB.listarAno(ano_selecionado);
                 System.out.printf("O valor total vendido no ano foi de: R$%.2f%n", total);
                 break;
             case 4:
                 while (mes_selecionado > 12 || mes_selecionado < 1 || ano_selecionado < 2017 /*|| ano_selecionado > local.datetime(anotatual) */) {
                     System.out.print("Mês desejado: "); //campo de escrita
-                    mes_selecionado = sc.nextInt(); //coluna de seleção
+                    mes_selecionado = lerInt(); //coluna de seleção
                     System.out.print("Ano desejado: ");
-                    ano_selecionado = sc.nextInt(); //coluna de seleção
+                    ano_selecionado = lerInt(); //coluna de seleção
                     if (mes_selecionado > 12 || mes_selecionado < 1 || ano_selecionado < 2017 /*|| ano_selecionado > local.datetime(anotatual) */) {
                         System.out.println("Mês ou ano inválido");
                     }
                 }
                 formaPagamento = escolherFormaDePagamento();
-                total = bd.listarMesAnoFormaPagamento(mes_selecionado, ano_selecionado, formaPagamento);
+                total = BalancoDB.listarMesAnoFormaPagamento(mes_selecionado, ano_selecionado, formaPagamento);
                 System.out.printf("O valor total vendido no período foi de: R$%.2f%n", total);
                 break;
             case 5:
@@ -114,7 +117,7 @@ public class Balanco {
         System.out.println("2. Cartão de credito");
         System.out.println("3. Cartão de debito");
         System.out.println("4. Pix");
-        int i = sc.nextInt();
+        int i = lerInt();
 
         if (i == 1) {
             formaPagamento = "Dinheiro";
@@ -134,3 +137,5 @@ public class Balanco {
 
 
 }
+
+

@@ -1,21 +1,27 @@
-package com.sistemadevendas.login;
+package com.sistemadevendas.telas;
 
-import com.sistemadevendas.ConexaoBD;
+import static com.sistemadevendas.utilitarios.Entrada.lerInt;
+import static com.sistemadevendas.utilitarios.LimparTerminal.limparTerminal;
+
+import com.sistemadevendas.login.CadastrarDados;
+import com.sistemadevendas.login.LoginA;
+import com.sistemadevendas.login.LoginF;
+import com.sistemadevendas.login.PrimeiroAcessoA;
 
 import java.util.Scanner;
 
 public class TelaLogin {
     Scanner sc = new Scanner(System.in);
-    ConexaoBD usuario = new ConexaoBD();
     LoginA loginA = new LoginA();
     LoginF loginF = new LoginF();
 
     public void EscolhaLogin() {
+        limparTerminal();
         System.out.println("==Faça login no sistema==");
         System.out.println("Escolha uma opção abaixo: \n");
         System.out.println("1. Administrador");
         System.out.println("2. Funcionario");
-        int opcao = sc.nextInt();
+        int opcao = lerInt();
         if (opcao == 1) {
             loginA.loginAdmin();
         } else if (opcao == 2) {
@@ -40,3 +46,4 @@ public class TelaLogin {
     }
 
 }
+

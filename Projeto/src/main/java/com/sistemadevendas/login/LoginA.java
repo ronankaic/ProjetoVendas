@@ -1,18 +1,24 @@
 package com.sistemadevendas.login;
 
-import java.util.Scanner;
+
+import com.sistemadevendas.database.AdminDB;
+import com.sistemadevendas.telas.TelaPadrao;
+//import com.sistemadevendas.telas.TelaPadrao;
+
+import static com.sistemadevendas.database.Conexao.desconectar;
+import static com.sistemadevendas.utilitarios.Entrada.lerInt;
+import static com.sistemadevendas.utilitarios.Entrada.lerString;
 
 public class LoginA {
-    Scanner sc = new Scanner(System.in);
     Admin ad = new Admin();
-    AdminBD adminBD = new AdminBD();
+    AdminDB adminBD = new AdminDB();
 
     public void loginAdmin() {
         System.out.println("Login de administrador");
         System.out.print("Login: ");
-        String login = sc.nextLine();
+        String login = lerString();
         System.out.print("Senha: ");
-        int senha = sc.nextInt();
+        int senha = lerInt();
 
 
         int count = 3;
@@ -21,11 +27,10 @@ public class LoginA {
         while (!loginBemSucedido && count > 1) {
             count--;
             System.out.println("Login ou senha incorretos. Você possui " + count + " tentativa(s).");
-            sc.nextLine();
             System.out.print("Login: ");
-            login = sc.nextLine();
+            login = lerString();
             System.out.print("Senha: ");
-            senha = sc.nextInt();
+            senha = lerInt();
             loginBemSucedido = adminBD.realizarlogin(login, senha);
         }
 
@@ -36,8 +41,13 @@ public class LoginA {
             telaPadrao.telaAdmin();
         } else {
             System.out.println("Login negado. Número de tentativas excedido.");
+            desconectar();
+            System.exit(0);
             //recomeçar programa
         }
     }
 
 }
+
+
+

@@ -1,26 +1,25 @@
 package com.sistemadevendas;
 
-
-import com.sistemadevendas.login.LoginF;
-import com.sistemadevendas.login.TelaLogin;
-import com.sistemadevendas.login.TelaPadrao;
-import com.sistemadevendas.login.TesteJava;
+import com.sistemadevendas.database.AdminDB;
+import com.sistemadevendas.telas.TelaLogin;
 
 import java.util.Locale;
 
+import static com.sistemadevendas.database.CriacaoDeTabelas.tabelas;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
-        TelaLogin telaLogin = new TelaLogin();
-        TelaPadrao telaPadrao = new TelaPadrao();
-        LoginF login = new LoginF();
-        //telaLogin.EscolhaLogin();
-        TesteJava testeJava = new TesteJava();
-        testeJava.inserirAdmin();
-        testeJava.testeConexaoA();
-        testeJava.testeConexaoF();
-
-
+        TelaLogin login = new TelaLogin();
+        tabelas();
+       int i = new AdminDB().quantidadeAdmin();
+        if(i < 10){
+            login.primeiraExecucao();
+        }else {
+            login.EscolhaLogin();
+        }
 
     }
 }

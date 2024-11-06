@@ -1,29 +1,31 @@
-package com.sistemadevendas.login;
+package com.sistemadevendas.telas;
 
-import com.sistemadevendas.LimparTerminal;
+import com.sistemadevendas.login.CadastrarDados;
+import com.sistemadevendas.login.PrimeiroAcessoA;
 
-import java.util.Scanner;
+import static com.sistemadevendas.database.Conexao.desconectar;
+import static com.sistemadevendas.utilitarios.Entrada.lerInt;
+import static com.sistemadevendas.utilitarios.LimparTerminal.limparTerminal;
 
 public class Menu {
-    Scanner sc = new Scanner(System.in);
     PrimeiroAcessoA cadAdmin = new PrimeiroAcessoA();
-    PrimeiroAcessoF cadFuncionario = new PrimeiroAcessoF();
     CadastrarDados cadastrarDados = new CadastrarDados();
-    LimparTerminal lt = new LimparTerminal();
 
     public void menuPrimeiraVez() {
         while (true) {
+            limparTerminal();
             System.out.println("==Bem vindo==");
             System.out.println("Escolha uma opção abaixo: \n");
             System.out.println("1. Primeiro acesso(cadastro administrador)");
             System.out.println("2. Sair\n");
-            int opcao = sc.nextInt();
+            int opcao = lerInt();
             switch (opcao) {
                 case 1:
                     primeiroAcessoAdmin();//primeiro acesso administrador
                     break;
                 case 2:
                     System.out.println("Finalizando programa");
+                    desconectar();
                     System.exit(0);
                     break;
                 default:
@@ -45,3 +47,4 @@ public class Menu {
 
 
 }
+

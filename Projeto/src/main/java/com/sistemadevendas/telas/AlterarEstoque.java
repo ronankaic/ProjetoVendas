@@ -1,17 +1,22 @@
-package com.sistemadevendas.venda;
+package com.sistemadevendas.telas;
 
-import com.sistemadevendas.ConexaoBD;
+import com.sistemadevendas.database.VendaDB;
+import com.sistemadevendas.venda.TelaInicial;
 
-import java.sql.Connection;
 import java.util.Scanner;
+
+
+import static com.sistemadevendas.utilitarios.LimparTerminal.limparTerminal;
 
 public class AlterarEstoque {
     TelaInicial tela = new TelaInicial();
-    Connection conexao = ConexaoBD.conectar();
+    VendaDB venda = new VendaDB();
+
     Scanner sc = new Scanner(System.in);
 
     public void alterarEstoque() {
-        tela.listarProdutos(conexao);
+        limparTerminal();
+        venda.listarProdutos();
         int id = 1;
         while (id != 0) {
             System.out.println("==Alterar os dados do estoque==");
@@ -23,12 +28,11 @@ public class AlterarEstoque {
                 }
                 System.out.print("Digite a quantidade: ");
                 int quantidade = sc.nextInt();
-                tela.atualizarEstoque(conexao, id, quantidade);
+                venda.atualizarEstoque( id, quantidade);
                 System.out.println("Estoque alterado com sucesso!");
                 System.out.println();
             }
-
-
         }
     }
 }
+

@@ -1,26 +1,26 @@
 package com.sistemadevendas.login;
 
-import com.sistemadevendas.ConexaoBD;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Scanner;
+import com.sistemadevendas.database.FuncionarioDB;
+import com.sistemadevendas.telas.TelaPadrao;
+
+import static com.sistemadevendas.database.Conexao.desconectar;
+import static com.sistemadevendas.utilitarios.Entrada.lerInt;
+import static com.sistemadevendas.utilitarios.Entrada.lerString;
+
 
 public class LoginF {
     public void loginF() {
-        Scanner sc = new Scanner(System.in);
         Funcionario funcionario = new Funcionario();
         PrimeiroAcessoF primeiroAcesso = new PrimeiroAcessoF();
-        ConexaoBD bd = new ConexaoBD();
         FuncionarioDB funcionarioDB = new FuncionarioDB();
 
 
         System.out.println("Login Funcionario");
         System.out.print("Login: ");
-        String login = sc.nextLine();
+        String login = lerString();
         System.out.print("Senha: ");
-        int senha = sc.nextInt();
+        int senha = lerInt();
 
 
         int count = 3;
@@ -31,11 +31,10 @@ public class LoginF {
         while (!loginBemSucedido && count > 1) {
             count--;
             System.out.println("Login ou senha incorretos. Você possui " + count + " tentativa(s).");
-            sc.nextLine();
             System.out.print("Login: ");
-            login = sc.nextLine();
+            login = lerString();
             System.out.print("Senha: ");
-            senha = sc.nextInt();
+            senha = lerInt();
             loginBemSucedido = funcionarioDB.realizarLogin(login,senha);
         }
         if (loginBemSucedido) {
@@ -45,6 +44,7 @@ public class LoginF {
             telaPadrao.telaFuncionario();
         } else {
             System.out.println("Login negado. Número de tentativas excedido.");
+            desconectar();
             System.exit(0);
         }
 

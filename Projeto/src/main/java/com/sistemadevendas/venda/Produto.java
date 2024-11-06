@@ -33,17 +33,11 @@ public class Produto {
         return preco;
     }
 
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
 
     public int getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
-    }
 
     @Override
     public String toString() {

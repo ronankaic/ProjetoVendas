@@ -1,30 +1,33 @@
 package com.sistemadevendas.login;
 
-import com.sistemadevendas.LimparTerminal;
+
+import com.sistemadevendas.database.AdminDB;
+import com.sistemadevendas.telas.Menu;
 
 import java.util.Random;
-import java.util.Scanner;
+
+import static com.sistemadevendas.utilitarios.Entrada.lerInt;
+import static com.sistemadevendas.utilitarios.Entrada.lerString;
+import static com.sistemadevendas.utilitarios.LimparTerminal.limparTerminal;
 
 public class PrimeiroAcessoA {
-    LimparTerminal lt = new LimparTerminal();
-    Scanner sc = new Scanner(System.in);
     int idA;
-    AdminBD adminBD = new AdminBD();
+    AdminDB adminBD = new AdminDB();
 
 
     public void CadastrarAdmin() {
 
         if (adminBD.obterUltimoId() < 90) {
+            limparTerminal();
             System.out.println("==Cadastro de administrador==");
             System.out.print("Digite o nome do administrador: ");
-            String nome = sc.nextLine();
+            String nome = lerString();
             System.out.print("Senha(sequência numérica de 5 digitos): ");
-            int senha = sc.nextInt();
-            sc.nextLine();
+            int senha = lerInt();
             while (senha < 10000 || senha > 100000) {
                 System.out.println("A senha deve ter no mínimo e no máximo 5 digitos.");
                 System.out.print("Senha: ");
-                senha = sc.nextInt();
+                senha = lerInt();
             }
 
             setIdA();
@@ -32,17 +35,13 @@ public class PrimeiroAcessoA {
             System.out.println("Id Criado com sucesso ID= " + idA);
 
             Admin admin = new Admin(nome, senha, idA);
-            AdminBD adminBD = new AdminBD();
             adminBD.cadastrarAdmin(admin);
         } else {
             System.out.println("Numero maximo de administradores cadastrados");
             System.out.println("Faça login ou cadastre um novo funcionario");
             Menu menu = new Menu();
 
-
         }
-
-
     }
 
     public void setIdA() {
@@ -58,14 +57,5 @@ public class PrimeiroAcessoA {
 
     }
 
-/*
-    private void gerarId() {
-        Random rand = new Random();
-        int numeroA;
-
-        numeroA = rand.nextInt(10000);
-        idA = numeroA;
-    }
-*/
-
 }
+

@@ -1,4 +1,4 @@
-package com.sistemadevendas;
+package com.sistemadevendas.utilitarios;
 
 public class LimparTerminal {
 

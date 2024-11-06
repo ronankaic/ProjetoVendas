@@ -1,23 +1,30 @@
-package com.sistemadevendas.login;
+package com.sistemadevendas.telas;
 
-import com.sistemadevendas.ConexaoBD;
+import com.sistemadevendas.database.AdminDB;
+import com.sistemadevendas.database.FuncionarioDB;
+import com.sistemadevendas.login.CadastrarDados;
+import com.sistemadevendas.login.PrimeiroAcessoF;
+
+import static com.sistemadevendas.database.Conexao.desconectar;
+import static com.sistemadevendas.utilitarios.Entrada.lerInt;
+import static com.sistemadevendas.utilitarios.LimparTerminal.limparTerminal;
+
+
 import com.sistemadevendas.balanco.Balanco;
-import com.sistemadevendas.venda.AlterarEstoque;
 import com.sistemadevendas.venda.TelaInicial;
 
-import java.util.Scanner;
-
 public class TelaPadrao {
-    Scanner sc = new Scanner(System.in);
+    AdminDB adminDB = new AdminDB();
+    FuncionarioDB funcionarioDB = new FuncionarioDB();
     Balanco balanco = new Balanco();
     CadastrarDados dados = new CadastrarDados();
     PrimeiroAcessoF loginF = new PrimeiroAcessoF();
     AlterarEstoque alterarEstoque = new AlterarEstoque();
     TelaInicial telaInicial = new TelaInicial();
-    ConexaoBD conexaoBD = new ConexaoBD();
-    int id;
+
 
     public void telaAdmin() {
+        limparTerminal();
         System.out.println("==Bem vindo==\n");
         System.out.println("1. Acessar balanço");
         System.out.println("2. Alterar dados de vendas");
@@ -26,7 +33,7 @@ public class TelaPadrao {
         System.out.println("5. Acessar sistema de vendas");
         System.out.println("6. Checar dados do usuario");
         System.out.println("7. Sair");
-        int op = sc.nextInt();
+        int op = lerInt();
         switch (op) {
             case 1:
                 balanco.acessar();
@@ -50,13 +57,14 @@ public class TelaPadrao {
                 break;
             case 6:
                 System.out.print("Digite a sua senha: ");
-                int senha = sc.nextInt();
-                conexaoBD.checarDadosA(senha);
+                int senha = lerInt();
+                adminDB.checarDadosA(senha);
                 telaAdmin();
                 break;
             case 7:
                 System.out.println("Obrigado, volte sempre!");
                 System.out.println("Finalizando programa");
+                desconectar();
                 System.exit(0);
                 break;
             default:
@@ -68,12 +76,13 @@ public class TelaPadrao {
     }
 
     public void telaFuncionario() {
+        limparTerminal();
         System.out.println("==Bem vindo==\n");
         System.out.println("1. Acessar balanço");
         System.out.println("2. Acessar sistema de vendas");
         System.out.println("3. Checar dados do usuario");
         System.out.println("4. Sair");
-        int op = sc.nextInt();
+        int op = lerInt();
         switch (op) {
             case 1:
                 balanco.acessar();
@@ -85,13 +94,14 @@ public class TelaPadrao {
                 break;
             case 3:
                 System.out.print("Digite a sua senha: ");
-                int senha = sc.nextInt();
-                conexaoBD.checarDadosf(senha);
+                int senha = lerInt();
+                funcionarioDB.checarDadosf(senha);
                 telaFuncionario();
                 break;
             case 4:
                 System.out.println("Obrigado, volte sempre!");
                 System.out.println("Finalizando programa");
+                desconectar();
                 System.exit(0);
                 break;
             default:
@@ -101,3 +111,4 @@ public class TelaPadrao {
         }
     }
 }
+
