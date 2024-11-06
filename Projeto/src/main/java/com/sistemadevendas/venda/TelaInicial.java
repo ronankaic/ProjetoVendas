@@ -67,8 +67,7 @@ public class TelaInicial {
             case 5:
                 limparTerminal();
                 finalizarCompra();
-
-                recomecarMenu();
+                sc.nextLine();
                 break;
             case 6:
                 return;
@@ -118,15 +117,13 @@ public class TelaInicial {
                 int cartao = lerInt();
                 if (cartao == 1) {
                     formaPagamento = "Cartão de débito";
-                    double porcentagemDebito = 1 + (taxaDebito / 100);
-                    total *= porcentagemDebito;
-                    vendaDB.registrarSaidas( carrinho.getProdutos(), formaPagamento);
+                    total /= taxaDebito;
+                    vendaDB.registrarSaidas(carrinho.getProdutos(), formaPagamento);
                     System.out.printf("Taxa de %.2f%% adicionada no valor total\n", taxaDebito);
                 } else if (cartao == 2) {
                     formaPagamento = "Cartão de crédito";
-                    double porcentagemCredito = 1 + (taxaCredito / 100);
-                    total *= porcentagemCredito;
-                    vendaDB.registrarSaidas( carrinho.getProdutos(), formaPagamento);
+                    total /= taxaCredito;
+                    vendaDB.registrarSaidas(carrinho.getProdutos(), formaPagamento);
                     System.out.printf("Taxa de %.2f%% adicionada no valor total\n", taxaCredito);
                 } else {
                     System.out.println("Escolha inválida.");
@@ -143,28 +140,6 @@ public class TelaInicial {
 
         carrinho.limparCarrinho();
 
-    }
-
-    private void recomecarMenu() {
-        System.out.println("Deseja voltar a tela inicial?");
-        System.out.println("1. Recomeçar programa");
-        System.out.println("2. Finalizar programa");
-
-        int opcao = lerInt();
-
-        switch (opcao) {
-            case 1:
-                mostrarMenu();
-                break;
-            case 2:
-                System.out.println("Finalizando programa");
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Opcao invalida. Por favor, digite 1 ou 2.");
-        }
-        sc.nextLine();
-        limparTerminal();
     }
 
     public void adicionarCarrinho() {

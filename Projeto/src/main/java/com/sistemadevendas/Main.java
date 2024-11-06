@@ -15,7 +15,7 @@ public class Main {
         TelaLogin login = new TelaLogin();
         tabelas();
        int i = new AdminDB().quantidadeAdmin();
-        if(i < 10){
+        if(i < 1){
             login.primeiraExecucao();
         }else {
             login.EscolhaLogin();

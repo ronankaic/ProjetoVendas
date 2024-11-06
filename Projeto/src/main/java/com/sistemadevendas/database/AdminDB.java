@@ -66,7 +66,7 @@ public class AdminDB {
 
 
     public void taxaDebito(double debito) {
-        String sql = "UPDATE dados SET taxa_debito = ? WHERE id = 1";
+        String sql = "UPDATE dados SET taxa_debito = ? WHERE id = 0";
         try (PreparedStatement stmt = conectar().prepareStatement(sql)) {
             stmt.setDouble(1, debito);
             stmt.executeUpdate();
@@ -78,7 +78,7 @@ public class AdminDB {
 
     public void taxaCredito(double credito) {
 
-        String sql = "UPDATE dados SET taxa_credito = ? WHERE id = 1";
+        String sql = "UPDATE dados SET taxa_credito = ? WHERE id = 0";
         try (PreparedStatement stmt = conectar().prepareStatement(sql)) {
             stmt.setDouble(1, credito);
             stmt.executeUpdate();
@@ -96,7 +96,7 @@ public class AdminDB {
             return;
         }
 
-        String sql = "UPDATE dados SET chave_pix = ? WHERE id = 0";
+        String sql = "UPDATE dados SET chava_pix = ? WHERE id = 0";
         try (PreparedStatement stmt = conectar().prepareStatement(sql)) {
             stmt.setString(1, pix);
             int rowsAffected = stmt.executeUpdate();

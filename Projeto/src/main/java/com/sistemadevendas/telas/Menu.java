@@ -38,13 +38,6 @@ public class Menu {
     private void primeiroAcessoAdmin() {
         cadAdmin.CadastrarAdmin();
         cadastrarDados.cadastrarDados();
-
     }
-
-
-
-
-
-
 }
 

@@ -119,7 +119,7 @@ public class VendaDB {
     }
 
     public void registrarSaidas(List<Produto> produtos, String formaPagamento) {
-        String sql = "INSERT INTO saidas (id_produto, produto, preco, quantidade, forma_pagamento, dia, mes, ano) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO saidas (id_produtos, produtos, preco, quantidade, forma_pagamento, dia, mes, ano) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         LocalDate dataAtual = LocalDate.now();
 
         try (PreparedStatement pstmt = conectar().prepareStatement(sql)) {
@@ -142,16 +142,16 @@ public class VendaDB {
     }
 
     public void PesquisarDados() {
-        String sql = "SELECT * FROM dados WHERE id=1";
+        String sql = "SELECT * FROM dados WHERE id=0";
         try (PreparedStatement pst = conectar().prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
+            ResultSet rs = pst.executeQuery()) {
             if (rs.next()) {
                 taxaCredito = rs.getDouble("taxa_credito");
                 taxaDebito = rs.getDouble("taxa_debito");
-                chavePix = rs.getString("pix");
+                chavePix = rs.getString("chava_pix");
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao localizar dados de vendas");
+            System.out.println("Erro ao localizar dados de vendas" + e.getMessage());
         }
     }
 
