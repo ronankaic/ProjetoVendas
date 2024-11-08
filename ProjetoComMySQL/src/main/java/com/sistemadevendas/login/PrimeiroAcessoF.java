@@ -14,8 +14,7 @@ public class PrimeiroAcessoF {
     int idF;
 
 
-
-    public void CadastrarFuncionario(){
+    public void CadastrarFuncionario() {
         limparTerminal();
         System.out.println("==Cadastro de funcionario==");
         System.out.print("Digite o nome do funcionario: ");
@@ -29,21 +28,21 @@ public class PrimeiroAcessoF {
         }
         setIdF();
         System.out.println("Id Criado com sucesso ID= " + idF);
-
-        Funcionario funcionario = new Funcionario(nome, senha,idF);
+        lerString();
+        Funcionario funcionario = new Funcionario(nome, senha, idF);
         func.cadastrarFuncionario(funcionario);
 
     }
 
 
-    public void setIdF(){
+    public void setIdF() {
         Random rand = new Random();
         int limite = 100000; // gera um inteiro aleatório entre 0 e 100.000
         int randNumF = rand.nextInt(limite);
-        if (randNumF < 10000){ //ID de funcioinário obrigatoriamente > 10.000, ou seja, tem 5 algarismos ou +
-            do{
+        if (randNumF < 10000) { //ID de funcioinário obrigatoriamente > 10.000, ou seja, tem 5 algarismos ou +
+            do {
                 randNumF = rand.nextInt(limite);
-            } while(randNumF < 10000);
+            } while (randNumF < 10000);
         }
         idF = randNumF;
 

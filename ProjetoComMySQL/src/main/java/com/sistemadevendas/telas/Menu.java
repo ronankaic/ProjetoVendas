@@ -10,6 +10,7 @@ import static com.sistemadevendas.utilitarios.LimparTerminal.limparTerminal;
 public class Menu {
     PrimeiroAcessoA cadAdmin = new PrimeiroAcessoA();
     CadastrarDados cadastrarDados = new CadastrarDados();
+    TelaLogin telaLogin = new TelaLogin();
 
     public void menuPrimeiraVez() {
         while (true) {
@@ -21,7 +22,7 @@ public class Menu {
             int opcao = lerInt();
             switch (opcao) {
                 case 1:
-                    primeiroAcessoAdmin();//primeiro acesso administrador
+                    telaLogin.primeiraExecucao();//primeiro acesso administrador
                     break;
                 case 2:
                     System.out.println("Finalizando programa");
@@ -35,11 +36,7 @@ public class Menu {
         }
     }
 
-    private void primeiroAcessoAdmin() {
-        cadAdmin.CadastrarAdmin();
-        cadastrarDados.cadastrarDados();
 
-    }
 
 
 

@@ -12,9 +12,6 @@ import static com.sistemadevendas.utilitarios.Entrada.*;
 
 public class VendaDB {
     Carrinho carrinho = new Carrinho();
-    public double taxaCredito = 0;
-    public double taxaDebito = 0;
-    public String chavePix;
 
     public void listarProdutos() {
         String sql = "SELECT * FROM produtos";
@@ -74,6 +71,7 @@ public class VendaDB {
             pstmt.setInt(4, produto.getQuantidade());
             pstmt.executeUpdate();
             System.out.println("Produto cadastrado com sucesso! Último ID: " + ultimoId);
+            lerString();
         } catch (SQLException e) {
             System.out.println("Erro ao cadastrar produto: " + e.getMessage());
             throw new RuntimeException(e);
@@ -94,6 +92,7 @@ public class VendaDB {
 
             if (linhas > 0) {
                 System.out.println("Produto excluido com sucesso!");
+                lerString();
             } else {
                 System.out.println("Produto não encontrado!");
             }
@@ -119,7 +118,7 @@ public class VendaDB {
     }
 
     public void registrarSaidas(List<Produto> produtos, String formaPagamento) {
-        String sql = "INSERT INTO saidas (id_produto, produto, preco, quantidade, forma_pagamento, dia, mes, ano) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO saidas (id_produtos, produtos, preco, quantidade, forma_pagamento, dia, mes, ano) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         LocalDate dataAtual = LocalDate.now();
 
         try (PreparedStatement pstmt = conectar().prepareStatement(sql)) {
@@ -142,18 +141,26 @@ public class VendaDB {
     }
 
     public void PesquisarDados() {
-        String sql = "SELECT * FROM dados WHERE id=1";
-        try (PreparedStatement pst = conectar().prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
+        String sql = "SELECT * FROM dados WHERE id=0";
+        try (PreparedStatement stmt = conectar().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
             if (rs.next()) {
                 taxaCredito = rs.getDouble("taxa_credito");
                 taxaDebito = rs.getDouble("taxa_debito");
-                chavePix = rs.getString("pix");
+                chavePix = rs.getString("chava_pix");
             }
+
         } catch (SQLException e) {
-            System.out.println("Erro ao localizar dados de vendas");
+            System.out.println("Erro ao localizar dados de vendas: " + e.getMessage());
         }
     }
+
+    public double taxaCredito = 0;
+    public double taxaDebito = 0;
+    public String chavePix;
+
+
 
 
 }

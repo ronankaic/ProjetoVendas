@@ -32,7 +32,8 @@ public class TelaPadrao {
         System.out.println("4. Alterar estoque");
         System.out.println("5. Acessar sistema de vendas");
         System.out.println("6. Checar dados do usuario");
-        System.out.println("7. Sair");
+        System.out.println("7. Gerenciar usuarios");
+        System.out.println("8. Sair");
         int op = lerInt();
         switch (op) {
             case 1:
@@ -62,6 +63,10 @@ public class TelaPadrao {
                 telaAdmin();
                 break;
             case 7:
+                gerenciarUsuarios();
+                telaAdmin();
+                break;
+            case 8:
                 System.out.println("Obrigado, volte sempre!");
                 System.out.println("Finalizando programa");
                 desconectar();
@@ -110,5 +115,52 @@ public class TelaPadrao {
                 break;
         }
     }
+
+    private void gerenciarUsuarios() {
+        limparTerminal();
+        System.out.println("==Gerenciar Usuarios==");
+        System.out.println("Escolha uma opção abaixo: \n");
+        System.out.println("1. Excluir administradores");
+        System.out.println("2. Excluir funcionarios");
+        System.out.println("3. Voltar ao menu");
+        int opc = lerInt();
+        switch (opc) {
+            case 1:
+            excluirAdmin();
+                break;
+            case 2:
+                limparTerminal();
+                adminDB.listarFuncionarios();
+                System.out.println("Digite o id do usuario: ");
+                int idF = lerInt();
+                adminDB.deletarFuncionario(idF);
+                gerenciarUsuarios();
+                break;
+            case 3:
+                break;
+            default:
+                System.out.println("Escolha invalida");
+                gerenciarUsuarios();
+                break;
+        }
+    }
+
+    private void excluirAdmin() {
+        limparTerminal();
+        adminDB.listarAdmin();
+        System.out.print("Digite o id do usuario: ");
+        int idA = lerInt();
+        String nomeT = adminDB.nomeIdA();
+        int idALogado = adminDB.resgatarIdA(nomeT);
+        if (idA == idALogado) {
+            System.out.println("Não é possivel excluir o usuario ativo!");
+            excluirAdmin();
+        }else {
+            adminDB.deletarAdmin(idA);
+        }
+        gerenciarUsuarios();
+    }
+
+
 }
 

@@ -8,12 +8,14 @@ import com.sistemadevendas.telas.TelaPadrao;
 import static com.sistemadevendas.database.Conexao.desconectar;
 import static com.sistemadevendas.utilitarios.Entrada.lerInt;
 import static com.sistemadevendas.utilitarios.Entrada.lerString;
+import static com.sistemadevendas.utilitarios.LimparTerminal.limparTerminal;
 
 public class LoginA {
     Admin ad = new Admin();
     AdminDB adminBD = new AdminDB();
 
     public void loginAdmin() {
+        limparTerminal();
         System.out.println("Login de administrador");
         System.out.print("Login: ");
         String login = lerString();
@@ -22,7 +24,9 @@ public class LoginA {
 
 
         int count = 3;
+        adminBD.salvarLogin(login,senha);
         boolean loginBemSucedido = adminBD.realizarlogin(login, senha);
+
 
         while (!loginBemSucedido && count > 1) {
             count--;

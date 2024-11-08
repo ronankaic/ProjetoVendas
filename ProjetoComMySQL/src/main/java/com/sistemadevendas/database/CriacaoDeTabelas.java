@@ -13,6 +13,7 @@ public class CriacaoDeTabelas {
         admin();
         funcionario();
         dados();
+        dadosUsuario();
 
     }
 
@@ -94,5 +95,19 @@ public class CriacaoDeTabelas {
         }
     }
 
+    public static void dadosUsuario(){
+        String sql = "create table  if not exists dados_usuarios(\n" +
+                "    id int primary key ,\n" +
+                "    quantidade_admin int not null ,\n" +
+                "    quantidade_funcionario int not null ,\n" +
+                "    nome varchar(50) not null ,\n" +
+                "    senha int not null\n" +
+                ")";
+        try(PreparedStatement stmt = conectar().prepareStatement(sql)){
+            stmt.executeUpdate();
+        }catch (SQLException e) {
+            System.out.println("Erro ao criar Tabela" + e.getMessage());
+        }
+    }
 }
 

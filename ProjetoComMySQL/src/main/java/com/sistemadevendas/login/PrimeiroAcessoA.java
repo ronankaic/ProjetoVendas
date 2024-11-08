@@ -33,7 +33,7 @@ public class PrimeiroAcessoA {
             setIdA();
 
             System.out.println("Id Criado com sucesso ID= " + idA);
-
+            lerString();
             Admin admin = new Admin(nome, senha, idA);
             adminBD.cadastrarAdmin(admin);
         } else {

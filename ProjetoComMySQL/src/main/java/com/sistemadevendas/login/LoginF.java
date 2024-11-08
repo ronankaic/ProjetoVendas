@@ -7,6 +7,7 @@ import com.sistemadevendas.telas.TelaPadrao;
 import static com.sistemadevendas.database.Conexao.desconectar;
 import static com.sistemadevendas.utilitarios.Entrada.lerInt;
 import static com.sistemadevendas.utilitarios.Entrada.lerString;
+import static com.sistemadevendas.utilitarios.LimparTerminal.limparTerminal;
 
 
 public class LoginF {
@@ -15,7 +16,7 @@ public class LoginF {
         PrimeiroAcessoF primeiroAcesso = new PrimeiroAcessoF();
         FuncionarioDB funcionarioDB = new FuncionarioDB();
 
-
+        limparTerminal();
         System.out.println("Login Funcionario");
         System.out.print("Login: ");
         String login = lerString();
@@ -25,7 +26,7 @@ public class LoginF {
 
         int count = 3;
         boolean loginBemSucedido = false;
-        loginBemSucedido = funcionarioDB.realizarLogin(login,senha);
+        loginBemSucedido = funcionarioDB.realizarLogin(login, senha);
 
 
         while (!loginBemSucedido && count > 1) {
@@ -35,11 +36,10 @@ public class LoginF {
             login = lerString();
             System.out.print("Senha: ");
             senha = lerInt();
-            loginBemSucedido = funcionarioDB.realizarLogin(login,senha);
+            loginBemSucedido = funcionarioDB.realizarLogin(login, senha);
         }
         if (loginBemSucedido) {
             System.out.println("Login realizado com sucesso!");
-            System.out.println("==Bem vindo==");
             TelaPadrao telaPadrao = new TelaPadrao();
             telaPadrao.telaFuncionario();
         } else {
@@ -50,7 +50,6 @@ public class LoginF {
 
 
     }
-
 
 
 }

@@ -7,7 +7,6 @@ import static com.sistemadevendas.utilitarios.Entrada.*;
 import static com.sistemadevendas.utilitarios.LimparTerminal.limparTerminal;
 
 public class CadastrarDados {
-    TelaLogin login = new TelaLogin();
     AdminDB db = new AdminDB();
 
 
